@@ -437,8 +437,6 @@ namespace TalkaTIPClientV2
         {
             try
             {
-                Program.client = new Client(Program.serverAddress);
-
                 FriendButton.Visible = false;
                 deleteFriendButton.Visible = true;
                 BlockButton.Visible = true;
@@ -455,12 +453,14 @@ namespace TalkaTIPClientV2
                 }
                 else
                 {
+                    Program.client = new Client(Program.serverAddress);
+
                     // Load the messages from server if available   
                     Communication.GetAllChatMessages(Program.userLogin, listView1.SelectedItems[0].Text);
-                }
 
-                Thread.Sleep(100);
-                Program.client.Disconnect();
+                    Thread.Sleep(100);
+                    Program.client.Disconnect();
+                }
 
                 ContactName.Text = listView1.SelectedItems[0].Text;
             }

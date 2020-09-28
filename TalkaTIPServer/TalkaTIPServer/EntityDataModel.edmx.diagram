@@ -5,15 +5,15 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="c4cc5ced6a57487bb261f13b08a19ff5" Name="Diagram1">
-        <EntityTypeShape EntityType="TalkaTIPModel.Friends" Width="1.5" PointX="3" PointY="1.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="TalkaTIPModel.Histories" Width="1.5" PointX="3" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="TalkaTIPModel.Friends" Width="1.5" PointX="3" PointY="2.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="TalkaTIPModel.Histories" Width="1.5" PointX="5" PointY="3.875" IsExpanded="true" />
         <EntityTypeShape EntityType="TalkaTIPModel.Users" Width="1.5" PointX="0.5" PointY="4.625" IsExpanded="true" />
         <AssociationConnector Association="TalkaTIPModel.FK_Friends_0_0" ManuallyRouted="false" />
         <AssociationConnector Association="TalkaTIPModel.FK_Friends_1_0" ManuallyRouted="false" />
         <AssociationConnector Association="TalkaTIPModel.FK_Histories_0_0" ManuallyRouted="false" />
         <AssociationConnector Association="TalkaTIPModel.FK_Histories_1_0" ManuallyRouted="false" />
-        <EntityTypeShape EntityType="TalkaTIPModel.Blocked" Width="1.5" PointX="3" PointY="6.5" />
-        <EntityTypeShape EntityType="TalkaTIPModel.Messages" Width="1.5" PointX="3" PointY="8.75" />
+        <EntityTypeShape EntityType="TalkaTIPModel.Blocked" Width="1.5" PointX="5" PointY="6.5" />
+        <EntityTypeShape EntityType="TalkaTIPModel.Messages" Width="1.5" PointX="3" PointY="7.625" />
         <AssociationConnector Association="TalkaTIPModel.FK_Blocked_0_0" />
         <AssociationConnector Association="TalkaTIPModel.FK_Blocked_1_0" />
         <AssociationConnector Association="TalkaTIPModel.FK_Messages_0_0" />
