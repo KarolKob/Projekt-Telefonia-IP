@@ -149,7 +149,7 @@ namespace TalkaTIPClientV2
             }
             catch (Exception)
             {
-                MessageBox.Show("Packet sending error!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                //MessageBox.Show("Packet sending error!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -291,7 +291,7 @@ namespace TalkaTIPClientV2
             }
             catch (Exception)
             {
-                MessageBox.Show("Packet recieving error!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                //MessageBox.Show("Packet recieving error!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -340,7 +340,7 @@ namespace TalkaTIPClientV2
             }
             catch (Exception)
             {
-                MessageBox.Show("Packet sending error!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                //MessageBox.Show("Packet sending error!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             finally
             {
@@ -380,7 +380,7 @@ namespace TalkaTIPClientV2
             }
             catch (Exception)
             {
-                MessageBox.Show("Packet recieving error!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                //MessageBox.Show("Packet recieving error!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             finally
             {
@@ -434,7 +434,7 @@ namespace TalkaTIPClientV2
             }
             catch (Exception)
             {
-                MessageBox.Show("There was an error during disconnecting", "Błąd", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("There was an error during disconnecting", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -487,6 +487,10 @@ namespace TalkaTIPClientV2
             }
             catch (Exception)
             {
+                Program.mainWindow.Invoke((MethodInvoker)delegate
+                {
+                    Program.mainWindow.gbCall.Visible = true;
+                });
                 voicePlayer.Stop();
                 MessageBox.Show("Connection init error!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }

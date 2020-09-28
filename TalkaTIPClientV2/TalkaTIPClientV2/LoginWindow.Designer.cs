@@ -29,11 +29,11 @@
         private void InitializeComponent()
         {
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.ServerIPText = new System.Windows.Forms.TextBox();
             this.PasswordText = new System.Windows.Forms.TextBox();
             this.LoginText = new System.Windows.Forms.TextBox();
             this.LogInButton = new System.Windows.Forms.Button();
             this.RegisterButton = new System.Windows.Forms.Button();
-            this.ServerIPText = new System.Windows.Forms.TextBox();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -48,6 +48,19 @@
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Log in";
+            // 
+            // ServerIPText
+            // 
+            this.ServerIPText.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.ServerIPText.ForeColor = System.Drawing.Color.Gray;
+            this.ServerIPText.Location = new System.Drawing.Point(6, 100);
+            this.ServerIPText.Name = "ServerIPText";
+            this.ServerIPText.Size = new System.Drawing.Size(187, 24);
+            this.ServerIPText.TabIndex = 4;
+            this.ServerIPText.Text = "Server IP";
+            this.ServerIPText.Enter += new System.EventHandler(this.Textbox_Enter);
+            this.ServerIPText.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Enter_KeyDown);
+            this.ServerIPText.Leave += new System.EventHandler(this.Textbox_Leave);
             // 
             // PasswordText
             // 
@@ -97,19 +110,6 @@
             this.RegisterButton.UseVisualStyleBackColor = true;
             this.RegisterButton.Click += new System.EventHandler(this.RegisterButton_Click);
             // 
-            // ServerIPText
-            // 
-            this.ServerIPText.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.ServerIPText.ForeColor = System.Drawing.Color.Gray;
-            this.ServerIPText.Location = new System.Drawing.Point(6, 100);
-            this.ServerIPText.Name = "ServerIPText";
-            this.ServerIPText.Size = new System.Drawing.Size(187, 24);
-            this.ServerIPText.TabIndex = 4;
-            this.ServerIPText.Text = "Server IP";
-            this.ServerIPText.Enter += new System.EventHandler(this.Textbox_Enter);
-            this.ServerIPText.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Enter_KeyDown);
-            this.ServerIPText.Leave += new System.EventHandler(this.Textbox_Leave);
-            // 
             // LoginWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -133,6 +133,6 @@
         private System.Windows.Forms.TextBox LoginText;
         private System.Windows.Forms.Button LogInButton;
         private System.Windows.Forms.Button RegisterButton;
-        private System.Windows.Forms.TextBox ServerIPText;
+        public System.Windows.Forms.TextBox ServerIPText;
     }
 }

@@ -726,11 +726,13 @@ namespace TalkaTIPSerwer
         // Outgoing messages
         public static string OK()
         {
+            Console.WriteLine("OK");
             return ((char)5).ToString() + " <EOF>";
         }
 
         public static string Fail()
         {
+            Console.WriteLine("Fail");
             return ((char)6).ToString() + " <EOF>";
 
         }

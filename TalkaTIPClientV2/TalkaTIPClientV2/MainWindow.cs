@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NAudio.Wave;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -20,6 +21,14 @@ namespace TalkaTIPClientV2
         public DateTime begin;
         public DateTime end;
         public bool isReceiver = false;
+
+        private WaveIn recorder;
+        private BufferedWaveProvider bufferedWaveProvider;
+        private WaveOut player;
+        private WaveFormat waveFormat;
+        private UdpClient receiveClient = new UdpClient();
+        private UdpClient sendClient = new UdpClient();
+        private IPEndPoint remoteEP = new IPEndPoint(IPAddress.Any, 1550);
 
         public MainWindow()
         {
@@ -170,6 +179,7 @@ namespace TalkaTIPClientV2
 
         private void LogOutButton_Click(object sender, EventArgs e)
         {
+            Program.loginAndMessage.Clear();
             DialogResult = DialogResult.No;
             Close();
         }
@@ -178,6 +188,39 @@ namespace TalkaTIPClientV2
         {
             commThread = new Thread(waitForCommuniques);
             commThread.Start();
+
+            receiveClient.ExclusiveAddressUse = false;
+            sendClient.ExclusiveAddressUse = false;
+
+            receiveClient.Client.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
+            sendClient.Client.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
+
+
+
+            Thread t = new Thread(Service);
+            t.IsBackground = true;
+            t.Start();
+        }
+
+        void Service()
+        {
+            //sourcestream = new NAudio.Wave.WaveIn();
+            waveFormat = new WaveFormat(22050, 16, 1);
+
+            bufferedWaveProvider = new BufferedWaveProvider(waveFormat);
+
+            player = new WaveOut();
+
+            player.Init(bufferedWaveProvider);
+            player.Play();
+            receiveClient.Client.Bind(remoteEP);
+
+            while (true)
+            {
+                byte[] byteData = receiveClient.Receive(ref remoteEP);
+
+                bufferedWaveProvider.AddSamples(byteData, 0, byteData.Length);
+            }
         }
 
         private void MainWindow_FormClosed(object sender, FormClosedEventArgs e)
@@ -226,11 +269,29 @@ namespace TalkaTIPClientV2
             Program.callHandler = null;
         }
 
+        private void RecorderOnDataAvailable(object sender, WaveInEventArgs waveInEventArgs)
+        {
+            byte[] buffer = waveInEventArgs.Buffer;
+            sendClient.Send(buffer, buffer.Length, new IPEndPoint(IPAddress.Loopback, 1550));
+        }
+
         private void CallButton_Click(object sender, EventArgs e)
         {
             if (listView1.SelectedItems.Count == 0)
             {
                 MessageBox.Show("Please select a user to call.", "Error");
+            }
+            else if (listView1.SelectedItems[0].Text == Program.userLogin)
+            {
+                sendClient.Client.Bind(remoteEP);
+
+                recorder = new WaveIn();
+                recorder.DataAvailable += RecorderOnDataAvailable;
+                recorder.WaveFormat = waveFormat;
+                recorder.StartRecording();
+                labelCallUN.Text = listView1.SelectedItems[0].Text.ToString();
+                cancelCallButton.Visible = true;
+                CallButton.Visible = false;
             }
             else if (listView1.SelectedItems[0].ImageIndex == 0)
             {
@@ -281,6 +342,9 @@ namespace TalkaTIPClientV2
                 }
                 Program.client.Disconnect();
                 isReceiver = false;
+                gbAnswerCall.Visible = false;
+                gbCall.Visible = true;
+                gbAnswerCall.Visible = false;
             }
             catch (Exception)
             {
@@ -290,14 +354,20 @@ namespace TalkaTIPClientV2
 
         private void declineButton_Click(object sender, EventArgs e)
         {
-            Program.callHandler.DeclineCall(callerEndPoint);
             gbAnswerCall.Visible = false;
+            gbCall.Visible = true;
+            gbAnswerCall.Visible = false;
+            cancelCallButton.Visible = false;
+            CallButton.Visible = true;
+            Program.callHandler.DeclineCall(callerEndPoint);
             //gBChangePass.Enabled = true;
             //gBDelAcc.Enabled = true;
         }
 
         private void answerButton_Click(object sender, EventArgs e)
         {
+            gbInCall.Visible = true;
+            gbAnswerCall.Visible = false;
             Program.callHandler.AcceptCall(callerEndPoint);
         }
 
@@ -305,21 +375,35 @@ namespace TalkaTIPClientV2
         {
             try
             {
-                //timerCallOut.Stop();
-                Program.callHandler.CancelCall();
-                Program.client = new Client(Program.serverAddress);
-                Communication.CallState(Program.userLogin, listView1.SelectedItems[0].Text, DateTime.Now, TimeSpan.Zero);
-                string[] historyDetails = new string[3];
-                historyDetails[0] = listView1.SelectedItems[0].Text;
-                historyDetails[1] = DateTime.Now.ToString();
-                historyDetails[2] = "missed call";
-                listView2.Items.Insert(0, (new ListViewItem(historyDetails)));
-                listView2.Refresh();
-                Program.client.Disconnect();
-                cancelCallButton.Visible = false;
-                CallButton.Visible = true;
-                //gBChangePass.Enabled = true;
-                //gBDelAcc.Enabled = true;
+                if (listView1.SelectedItems.Count != 0)
+                {
+                    if (listView1.SelectedItems[0].Text == Program.userLogin)
+                    {
+                        recorder.StopRecording();
+                        // stop playback
+                        player.Stop();
+                        cancelCallButton.Visible = false;
+                        CallButton.Visible = true;
+                    }
+                    else
+                    {
+                        //timerCallOut.Stop();
+                        Program.callHandler.CancelCall();
+                        Program.client = new Client(Program.serverAddress);
+                        Communication.CallState(Program.userLogin, listView1.SelectedItems[0].Text, DateTime.Now, TimeSpan.Zero);
+                        string[] historyDetails = new string[3];
+                        historyDetails[0] = listView1.SelectedItems[0].Text;
+                        historyDetails[1] = DateTime.Now.ToString();
+                        historyDetails[2] = "missed call";
+                        listView2.Items.Insert(0, (new ListViewItem(historyDetails)));
+                        listView2.Refresh();
+                        Program.client.Disconnect();
+                        cancelCallButton.Visible = false;
+                        CallButton.Visible = true;
+                        //gBChangePass.Enabled = true;
+                        //gBDelAcc.Enabled = true;
+                    }
+                }
             }
             catch (Exception)
             {
@@ -435,38 +519,45 @@ namespace TalkaTIPClientV2
 
         private void listView1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            try
+            if (listView1.SelectedItems.Count == 0 || listView1.SelectedItems.Count > 1)
             {
-                FriendButton.Visible = false;
-                deleteFriendButton.Visible = true;
-                BlockButton.Visible = true;
-                UnblockButton.Visible = false;
-
-                if (listView1.SelectedItems[0].ForeColor == Color.Red)
-                {
-                    listView1.SelectedItems[0].ForeColor = Color.Black;
-                }
-
-                if (Program.loginAndMessage.ContainsKey(listView1.SelectedItems[0].Text))
-                {
-                    UpdateChatText(Program.loginAndMessage[listView1.SelectedItems[0].Text]);
-                }
-                else
-                {
-                    Program.client = new Client(Program.serverAddress);
-
-                    // Load the messages from server if available   
-                    Communication.GetAllChatMessages(Program.userLogin, listView1.SelectedItems[0].Text);
-
-                    Thread.Sleep(100);
-                    Program.client.Disconnect();
-                }
-
-                ContactName.Text = listView1.SelectedItems[0].Text;
+                //MessageBox.Show("You need to select one user from the friends list.", "Error");
             }
-            catch (Exception)
+            else
             {
-                MessageBox.Show("Server connection error.", "Error");
+                try
+                {
+                    FriendButton.Visible = false;
+                    deleteFriendButton.Visible = true;
+                    BlockButton.Visible = true;
+                    UnblockButton.Visible = false;
+
+                    if (listView1.SelectedItems[0].ForeColor == Color.Red)
+                    {
+                        listView1.SelectedItems[0].ForeColor = Color.Black;
+                    }
+
+                    if (Program.loginAndMessage.ContainsKey(listView1.SelectedItems[0].Text))
+                    {
+                        UpdateChatText(Program.loginAndMessage[listView1.SelectedItems[0].Text]);
+                    }
+                    else
+                    {
+                        Program.client = new Client(Program.serverAddress);
+
+                        // Load the messages from server if available   
+                        Communication.GetAllChatMessages(Program.userLogin, listView1.SelectedItems[0].Text);
+
+                        Thread.Sleep(100);
+                        Program.client.Disconnect();
+                    }
+
+                    ContactName.Text = listView1.SelectedItems[0].Text;
+                }
+                catch (Exception)
+                {
+                    MessageBox.Show("Server connection error.", "Error");
+                }
             }
         }
     }

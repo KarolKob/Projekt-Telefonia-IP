@@ -53,6 +53,7 @@ namespace TalkaTIPClientV2
                 if (dialogResult == DialogResult.No)
                 {
                     logIn = new LoginWindow();
+                    logIn.ServerIPText.Text = "127.0.0.1";
                     dialogResult = logIn.ShowDialog();
                 }
 
