@@ -12,19 +12,19 @@ namespace TalkaTIPSerwer
 {
     class AsynchronousServer
     {
-        private static System.Timers.Timer aTimer;
+        private static System.Timers.Timer serverTimer;
         private static Socket messageSocket = new Socket(AddressFamily.InterNetwork,
                 SocketType.Stream, ProtocolType.Tcp);
 
         private static void SetTimer()
         {
             // Create a timer with a 61 seconds interval
-            aTimer = new System.Timers.Timer(61000);
+            serverTimer = new System.Timers.Timer(61000);
 
             // Hook up the Elapsed event for the timer 
-            aTimer.Elapsed += OnTimedEvent;
-            aTimer.AutoReset = true;
-            aTimer.Enabled = true;
+            serverTimer.Elapsed += OnTimedEvent;
+            serverTimer.AutoReset = true;
+            serverTimer.Enabled = true;
         }
 
         private static void OnTimedEvent(Object source, ElapsedEventArgs e)
@@ -49,7 +49,7 @@ namespace TalkaTIPSerwer
 
         public static void StartListening()
         {
-            // Data buffer for incoming data.
+            // Data buffer for incoming data
             byte[] bytes = new Byte[1024];
 
             // Establish the local endpoint for the socket
@@ -57,7 +57,7 @@ namespace TalkaTIPSerwer
             IPHostEntry ipHostInfo = Dns.Resolve(Dns.GetHostName());
             int i = 0;
   
-            Console.WriteLine("Choose server IPv4 address:");
+            Console.WriteLine("Choose the server IPv4 address:");
 
             foreach (var item in ipHostInfo.AddressList)
             {

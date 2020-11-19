@@ -745,7 +745,8 @@ namespace TalkaTIPSerwer
                 if (user != null)
                 {
                     string message = string.Empty;
-                    //0111 login_1 status_1 IP_1 login_2 status_2 IP_2...login_n status_n IP_n)
+
+                    // 0111 login_1 status_1 IP_1 login_2 status_2 IP_2...login_n status_n IP_n)
                     var friends = ctx.Friends.Where(x => x.UserID1 == userID);  // Returns all friends
 
                     foreach (var item in friends)
@@ -793,7 +794,7 @@ namespace TalkaTIPSerwer
                 {
                     foreach (var item in histories)
                     {
-                        if (item.UserSenderID == userID)// userID is the sender
+                        if (item.UserSenderID == userID)    // userID is the sender
                         {
                             var friendLoginR = ctx.Users.Where(x => x.UserID == item.UserReceiverID).Select(x => x.Login).FirstOrDefault();
                             if (friendLoginR != null)
@@ -866,7 +867,7 @@ namespace TalkaTIPSerwer
             string decryptedMessage = Program.security.DecryptMessage(Convert.FromBase64String(message.Substring(2, message.Length - 8)), sessKey);
 
             // Take 8 bits to recognize the communique
-            int bits8 = (int)message[0];//decimal value
+            int bits8 = (int)message[0];    // Decimal value
 
             // Parameters to send
             string[] sParameters = decryptedMessage.Split(' ');
