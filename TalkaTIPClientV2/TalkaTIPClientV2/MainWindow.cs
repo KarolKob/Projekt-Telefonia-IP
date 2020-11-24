@@ -560,5 +560,21 @@ namespace TalkaTIPClientV2
                 }
             }
         }
+
+        private void addAPIButton_Click(object sender, EventArgs e)
+        {
+            string promptValue = addGameAPIText.Text;
+            if (promptValue != "") // TODO: Implement a regex that makes sure it's an IP address
+            {
+                // TODO: Send a request to given API and get an answer
+                    // TODO: Get an answer and add the API to the list
+            }
+        }
+
+        private void searchOpponentButton_Click(object sender, EventArgs e)
+        {
+            // TODO: Send a request to given API and get an answer
+                // TODO: Get an answer and proceed accordingly to what it is
+        }
     }
 }

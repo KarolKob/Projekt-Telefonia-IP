@@ -57,12 +57,19 @@
             this.disconnectButton = new System.Windows.Forms.Button();
             this.deleteFriendButton = new System.Windows.Forms.Button();
             this.UnblockButton = new System.Windows.Forms.Button();
+            this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.addGameAPIText = new System.Windows.Forms.TextBox();
+            this.serverAddressLabel = new System.Windows.Forms.Label();
+            this.addAPIButton = new System.Windows.Forms.Button();
+            this.gameAPIList = new System.Windows.Forms.ListBox();
+            this.searchOpponentButton = new System.Windows.Forms.Button();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
             this.gbCall.SuspendLayout();
             this.gbAnswerCall.SuspendLayout();
             this.gbInCall.SuspendLayout();
+            this.tabPage3.SuspendLayout();
             this.SuspendLayout();
             // 
             // AllMessages
@@ -181,6 +188,7 @@
             // 
             this.tabControl1.Controls.Add(this.tabPage1);
             this.tabControl1.Controls.Add(this.tabPage2);
+            this.tabControl1.Controls.Add(this.tabPage3);
             this.tabControl1.Location = new System.Drawing.Point(12, 76);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
@@ -358,6 +366,69 @@
             this.UnblockButton.Visible = false;
             this.UnblockButton.Click += new System.EventHandler(this.UnblockButton_Click);
             // 
+            // tabPage3
+            // 
+            this.tabPage3.BackColor = System.Drawing.SystemColors.Control;
+            this.tabPage3.Controls.Add(this.searchOpponentButton);
+            this.tabPage3.Controls.Add(this.gameAPIList);
+            this.tabPage3.Controls.Add(this.addAPIButton);
+            this.tabPage3.Controls.Add(this.serverAddressLabel);
+            this.tabPage3.Controls.Add(this.addGameAPIText);
+            this.tabPage3.Location = new System.Drawing.Point(4, 22);
+            this.tabPage3.Name = "tabPage3";
+            this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage3.Size = new System.Drawing.Size(187, 301);
+            this.tabPage3.TabIndex = 2;
+            this.tabPage3.Text = "Games";
+            // 
+            // addGameAPIText
+            // 
+            this.addGameAPIText.Location = new System.Drawing.Point(9, 25);
+            this.addGameAPIText.Name = "addGameAPIText";
+            this.addGameAPIText.Size = new System.Drawing.Size(172, 20);
+            this.addGameAPIText.TabIndex = 0;
+            // 
+            // serverAddressLabel
+            // 
+            this.serverAddressLabel.AutoSize = true;
+            this.serverAddressLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.serverAddressLabel.Location = new System.Drawing.Point(31, 6);
+            this.serverAddressLabel.Name = "serverAddressLabel";
+            this.serverAddressLabel.Size = new System.Drawing.Size(122, 16);
+            this.serverAddressLabel.TabIndex = 1;
+            this.serverAddressLabel.Text = "Game API address";
+            // 
+            // addAPIButton
+            // 
+            this.addAPIButton.BackColor = System.Drawing.SystemColors.ButtonShadow;
+            this.addAPIButton.Location = new System.Drawing.Point(57, 51);
+            this.addAPIButton.Name = "addAPIButton";
+            this.addAPIButton.Size = new System.Drawing.Size(58, 28);
+            this.addAPIButton.TabIndex = 16;
+            this.addAPIButton.Text = "Add API";
+            this.addAPIButton.UseVisualStyleBackColor = false;
+            this.addAPIButton.Click += new System.EventHandler(this.addAPIButton_Click);
+            // 
+            // gameAPIList
+            // 
+            this.gameAPIList.FormattingEnabled = true;
+            this.gameAPIList.HorizontalScrollbar = true;
+            this.gameAPIList.Location = new System.Drawing.Point(4, 92);
+            this.gameAPIList.Name = "gameAPIList";
+            this.gameAPIList.Size = new System.Drawing.Size(180, 173);
+            this.gameAPIList.TabIndex = 17;
+            // 
+            // searchOpponentButton
+            // 
+            this.searchOpponentButton.BackColor = System.Drawing.SystemColors.ButtonShadow;
+            this.searchOpponentButton.Location = new System.Drawing.Point(43, 267);
+            this.searchOpponentButton.Name = "searchOpponentButton";
+            this.searchOpponentButton.Size = new System.Drawing.Size(106, 28);
+            this.searchOpponentButton.TabIndex = 18;
+            this.searchOpponentButton.Text = "Search opponent";
+            this.searchOpponentButton.UseVisualStyleBackColor = false;
+            this.searchOpponentButton.Click += new System.EventHandler(this.searchOpponentButton_Click);
+            // 
             // MainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -391,6 +462,8 @@
             this.gbAnswerCall.PerformLayout();
             this.gbInCall.ResumeLayout(false);
             this.gbInCall.PerformLayout();
+            this.tabPage3.ResumeLayout(false);
+            this.tabPage3.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -425,6 +498,12 @@
         private System.Windows.Forms.Button deleteFriendButton;
         private System.Windows.Forms.Button UnblockButton;
         public System.Windows.Forms.TextBox AllMessages;
+        private System.Windows.Forms.TabPage tabPage3;
+        private System.Windows.Forms.ListBox gameAPIList;
+        private System.Windows.Forms.Button addAPIButton;
+        private System.Windows.Forms.Label serverAddressLabel;
+        private System.Windows.Forms.TextBox addGameAPIText;
+        private System.Windows.Forms.Button searchOpponentButton;
     }
 }
 
